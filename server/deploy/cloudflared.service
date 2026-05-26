@@ -1,0 +1,14 @@
+[Unit]
+Description=Cloudflare Tunnel (smartrash)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kllew
+ExecStart=/usr/local/bin/cloudflared tunnel --config /home/kllew/.cloudflared/config.yml run smartrash
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

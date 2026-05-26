@@ -1,0 +1,23 @@
+[Unit]
+Description=Smart Trash API (FastAPI)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kllew
+WorkingDirectory=/home/kllew/smartrash/server
+EnvironmentFile=/etc/smartrash.env
+ExecStart=/home/kllew/smartrash/server/.venv/bin/uvicorn app:app --host 127.0.0.1 --port 8000
+Restart=on-failure
+RestartSec=3
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/home/kllew/smartrash/server
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,60 @@
+# Environment variables and secrets
+.env
+*.env
+smartrash.env
+/etc/smartrash.env
+
+# Private keys and certificates
+*.pem
+*.pub
+mykey
+mykey.pub
+ubuntu_server.pem
+ubuntu_server.pem.pub
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+smartrash.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Cloudflared
+.cloudflared/
+*.json
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Temporary files
+*.tmp
+*.bak
+*.cache

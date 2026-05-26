@@ -1,0 +1,10 @@
+# Replace TUNNEL_UUID with the UUID returned by `cloudflared tunnel create smartrash`.
+# Replace the hostname with your real one.
+
+tunnel: TUNNEL_UUID
+credentials-file: /home/kllew/.cloudflared/TUNNEL_UUID.json
+
+ingress:
+  - hostname: smartrash.yourdomain.com
+    service: http://127.0.0.1:8000
+  - service: http_status:404

@@ -1,0 +1,82 @@
+╔══════════════════════════════════════════════════════════════╗
+║          SMART TRASH BIN - WiFi Quick Reference              ║
+║                  Keep this handy! 📋                         ║
+╚══════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────┐
+│ STEP 1: Edit the Code                                        │
+└──────────────────────────────────────────────────────────────┘
+
+File: esp32/Overall_ESP_WorkingCode.ino
+Lines: 10-11
+
+Change this:
+  const char* WIFI_SSID     = "PLDTHOMEFIBRxSQ9R";
+  const char* WIFI_PASSWORD = "GayoFamily@2025!";
+
+To your new WiFi:
+  const char* WIFI_SSID     = "YOUR_NEW_WIFI_NAME";
+  const char* WIFI_PASSWORD = "YOUR_NEW_PASSWORD";
+
+⚠️ Keep the quotes "" and semicolon ;
+⚠️ WiFi name is CASE-SENSITIVE
+⚠️ ESP32 only works with 2.4GHz WiFi (not 5GHz)
+
+┌──────────────────────────────────────────────────────────────┐
+│ STEP 2: Upload to ESP32                                      │
+└──────────────────────────────────────────────────────────────┘
+
+1. Connect ESP32 via USB
+2. Arduino IDE → Tools → Board → ESP32 Dev Module
+3. Arduino IDE → Tools → Port → Select COM port
+4. Click Upload button (→) or press Ctrl+U
+5. Wait for "Hard resetting via RTS pin..."
+
+┌──────────────────────────────────────────────────────────────┐
+│ STEP 3: Verify It Works                                      │
+└──────────────────────────────────────────────────────────────┘
+
+✓ Serial Monitor (115200 baud) shows: "WiFi connected. IP: ..."
+✓ LCD displays: "CLOSED"
+✓ Dashboard shows device ONLINE
+
+┌──────────────────────────────────────────────────────────────┐
+│ Common Issues                                                 │
+└──────────────────────────────────────────────────────────────┘
+
+Problem: "WiFi connect failed"
+→ Check password (case-sensitive!)
+→ Make sure it's 2.4GHz WiFi
+→ Move closer to router
+
+Problem: "No COM port"
+→ Install CP210x driver
+→ Try different USB cable
+→ Try different USB port
+
+Problem: "Device offline on dashboard"
+→ Check if server is running
+→ Update server IP in line 18 if it changed
+
+┌──────────────────────────────────────────────────────────────┐
+│ Important Settings                                            │
+└──────────────────────────────────────────────────────────────┘
+
+Board: ESP32 Dev Module
+Baud Rate: 115200
+Upload Speed: 921600 (default)
+
+Server IP (line 18): 192.168.1.10
+Server Port (line 17): 8000
+
+┌──────────────────────────────────────────────────────────────┐
+│ Need More Help?                                               │
+└──────────────────────────────────────────────────────────────┘
+
+See full guide: WIFI_SETUP_GUIDE.md
+Check server: sudo systemctl status smartrash-api
+Test server: http://SERVER_IP:8000/health
+
+═══════════════════════════════════════════════════════════════
+           Total time needed: ~5 minutes ⏱️
+═══════════════════════════════════════════════════════════════
