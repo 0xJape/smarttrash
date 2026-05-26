@@ -40,36 +40,60 @@ The Smart Trash Bin is an IoT-enabled waste management solution that provides:
 ## 🏗️ System Architecture
 
 ```
-┌─────────────┐         WiFi/HTTP          ┌──────────────┐
-│   ESP32     │ ────────────────────────► │ FastAPI      │
-│ Controller  │  POST /ingest (JSON)       │ Server       │
-│             │                            │ (Python)     │
-│ - Sensors   │                            │              │
-│ - Servo     │                            │ - SQLite DB  │
-│ - LCD       │                            │ - REST API   │
-│ - Buzzer    │                            │              │
-└─────────────┘                            └──────┬───────┘
-                                                  │
-                                                  │ HTTP
-                                                  ▼
-                                           ┌──────────────┐
-                                           │ Web Dashboard│
-                                           │ (HTML/CSS/JS)│
-                                           │              │
-                                           │ - Live stats │
-                                           │ - Graphs     │
-                                           │ - History    │
-                                           └──────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                        LOCAL NETWORK (WiFi)                         │
+│                                                                     │
+│  ┌─────────────┐   WiFi/HTTP POST      ┌───────────────────────┐  │
+│  │   ESP32     │ ───────────────────► │    Jetson Nano         │  │
+│  │ DevKit V1   │  /ingest (JSON)       │  Ubuntu Server         │  │
+│  │             │                       │                        │  │
+│  │ - HC-SR04x2 │                       │  ┌─────────────────┐  │  │
+│  │ - KY-038    │                       │  │  FastAPI (py)   │  │  │
+│  │ - SG90 Servo│                       │  │  - /ingest      │  │  │
+│  │ - I2C LCD   │                       │  │  - /status      │  │  │
+│  │ - Buzzer    │                       │  │  - /history     │  │  │
+│  └─────────────┘                       │  │  - /dashboard   │  │  │
+│                                        │  └────────┬────────┘  │  │
+│                                        │           │           │  │
+│                                        │  ┌────────▼────────┐  │  │
+│                                        │  │  SQLite DB      │  │  │
+│                                        │  │  (readings,     │  │  │
+│                                        │  │   commands,     │  │  │
+│                                        │  │   device_state) │  │  │
+│                                        │  └─────────────────┘  │  │
+│                                        └──────────┬────────────┘  │
+└──────────────────────────────────────────────────┼────────────────┘
+                 │
+                ┌──────────▼──────────┐
+                │  Cloudflare Tunnel  │
+                │  (cloudflared)      │
+                │  - HTTPS endpoint   │
+                │  - Zero trust access│
+                └──────────┬──────────┘
+                 │
+                 │ HTTPS (Public Internet)
+                 ▼
+                ┌──────────────────────┐
+                │  Remote Users /      │
+                │  Web Browser         │
+                │                      │
+                │  Dashboard:          │
+                │  - Live bin status   │
+                │  - Fill percentage   │
+                │  - Lid state         │
+                │  - Sensor history    │
+                └──────────────────────┘
 ```
 
 ### Data Flow
-1. **ESP32** reads sensors (ultrasonic, sound) every ~80ms
+1. **ESP32** reads sensors (ultrasonic × 2, sound) every ~80ms
 2. **Decision Logic** determines if lid should open (hand detected OR sound detected)
-3. **Servo Motor** opens/closes lid with audio feedback
-4. **LCD Display** shows current status (OPEN/CLOSED/FULL)
-5. **HTTP POST** sends sensor data to server every 5 seconds
-6. **Server** stores data in SQLite and serves dashboard
-7. **Dashboard** displays real-time bin status and historical data
+3. **Servo Motor** opens/closes lid with audio feedback (buzzer)
+4. **LCD Display** shows current status (`OPEN` / `CLOSED` / `FULL`)
+5. **HTTP POST** sends sensor JSON to **Jetson Nano** server every 5 seconds
+6. **Jetson Nano** (FastAPI) validates token → stores reading in **SQLite DB**
+7. **Cloudflare Tunnel** (`cloudflared`) exposes Jetson API securely to the internet via HTTPS
+8. **Remote Browser** accesses dashboard through Cloudflare URL — no port forwarding needed
 
 ---
 
