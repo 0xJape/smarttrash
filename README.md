@@ -1,9 +1,11 @@
-# Smart Trash Bin System 🗑️
+# iTrash — Smart Trash Can Lid System 🗑️
 
-An intelligent, touchless waste management system using ESP32 microcontroller with automated lid control, real-time capacity monitoring, and cloud-based dashboard.
+An IoT-based Smart Trash Can Lid system that automates waste disposal operations and monitors trash fill levels in real time through the integration of sensors, servo motor actuation, and web-based technologies.
 
 ## 📋 Table of Contents
 - [Overview](#overview)
+- [Objectives](#objectives)
+- [Scope and Limitations](#scope-and-limitations)
 - [System Architecture](#system-architecture)
 - [Hardware Components](#hardware-components)
 - [ESP32 Wiring & Connections](#esp32-wiring--connections)
@@ -18,22 +20,57 @@ An intelligent, touchless waste management system using ESP32 microcontroller wi
 
 ## 🎯 Overview
 
-The Smart Trash Bin is an IoT-enabled waste management solution that provides:
-- **Touchless Operation**: Automatic lid opening via proximity or voice detection
-- **Capacity Monitoring**: Real-time trash level measurement
-- **Full Bin Alerts**: Visual and audio notifications when bin is full
-- **Remote Monitoring**: Web dashboard accessible from anywhere
-- **WiFi Connectivity**: Sends sensor data to cloud server every 5 seconds
+**iTrash** is an IoT-enabled automated waste management prototype that provides touchless lid operation and real-time trash level monitoring. The system integrates an ESP32 DevKit V1, ultrasonic sensors, sound sensor, servo motor, LCD display, buzzer, and a web-based dashboard to deliver automated waste disposal monitoring and notification features — promoting sanitation, convenience, and efficient waste management.
 
 ### Key Features
-✅ Dual trigger system (hand proximity + sound detection)  
-✅ Automatic lid control with servo motor  
-✅ Real-time LCD status display  
-✅ Ultrasonic distance sensors for lid detection and capacity monitoring  
-✅ Audio feedback via buzzer  
-✅ Web-based dashboard with live updates  
-✅ SQLite database for historical data  
-✅ Secure remote access via Cloudflare tunnel  
+✅ Touchless lid operation via sound detection and servo motor actuation  
+✅ Dual ultrasonic sensors — lid trigger (hand proximity) + fill level monitoring  
+✅ Real-time LCD status display (`OPEN` / `CLOSED` / `FULL`)  
+✅ Audio feedback via piezo buzzer for open, close, and full-bin alerts  
+✅ WiFi connectivity — sends sensor data to server every 5 seconds  
+✅ Web-based dashboard with live bin status and historical data  
+✅ SQLite database for persistent data storage  
+✅ Secure remote access via Cloudflare tunnel (no port forwarding needed)  
+✅ mDNS hostname resolution for zero-config LAN discovery  
+
+---
+
+## 📌 Objectives
+
+### General Objective
+To develop an IoT-based Smart Trash Can Lid system capable of automating waste disposal operations and monitoring trash fill levels in real time through the integration of sensors, servo motor actuation, and web-based technologies.
+
+### Specific Objectives
+1. To design and develop a touchless trash bin lid mechanism using a sound sensor and servo motor for automated opening and closing operations.
+2. To implement an ultrasonic sensing system capable of monitoring the trash bin's fill level in real time.
+3. To integrate an ESP32 DevKit V1 as the central controller for processing sensor inputs and managing system operations.
+4. To provide real-time visual and audio notifications through an LCD and piezo buzzer whenever the trash bin reaches maximum capacity.
+5. To promote sanitation, convenience, and efficient waste management through the application of Internet of Things (IoT) technology.
+
+---
+
+## 📐 Scope and Limitations
+
+### Scope
+The **iTrash** project focuses on developing an IoT-based automated waste management prototype capable of touchless lid operation and real-time trash level monitoring. The system integrates the following components:
+
+| Component | Role |
+|-----------|------|
+| ESP32 DevKit V1 | Central controller — WiFi, sensor processing, servo control |
+| HC-SR04 Ultrasonic Sensor (×2) | Lid trigger (hand detection) + fill level measurement |
+| KY-038 Sound Sensor | Voice/sound-activated lid opening |
+| SG90 Servo Motor | Automated lid opening and closing (0°–150°) |
+| 16×2 I2C LCD | Real-time status display |
+| Piezo Buzzer | Audio feedback for open, close, and full-bin events |
+| Jetson Nano (Ubuntu Server) | Hosts FastAPI backend + SQLite database |
+| Web Dashboard | Real-time monitoring via browser |
+| Cloudflare Tunnel | Secure remote access without port forwarding |
+
+### Limitations
+- The system requires a **stable power supply** and an active **WiFi connection** for proper operation and dashboard communication.
+- The **sound sensor** may respond to loud environmental noises unrelated to user intent.
+- **Ultrasonic sensor readings** may vary depending on the shape and arrangement of trash inside the bin.
+- The project is intended for **educational and prototype purposes only** and may require further optimization for large-scale or commercial implementation.
 
 ---
 
